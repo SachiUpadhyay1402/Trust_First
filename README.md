@@ -29,6 +29,7 @@
 - [Deployment](#-deployment)
 - [Contributing](#-contributing)
 - [License](#-license)
+- [Team](#-team)
 
 ---
 
@@ -720,8 +721,9 @@ Contributions are welcome! Please follow these steps:
 
 ## 👥 Team
 
-
-
+1. Sachi Upadhyay
+2. Mann Monpara
+3. Kunjan Nandha
 
 ---
 
