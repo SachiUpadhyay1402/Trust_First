@@ -1,31 +1,39 @@
 importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js');
 
-// Initialize the Firebase app in the service worker by passing in the messagingSenderId.
-firebase.initializeApp({
-    apiKey: "AIzaSyCtuWqRevBeq8t7GDtflpIXJ7uiq755U0A",
-    authDomain: "setu-79fd9.firebaseapp.com",
-    projectId: "setu-79fd9",
-    storageBucket: "setu-79fd9.firebasestorage.app",
-    messagingSenderId: "103604699354",
-    appId: "1:103604699354:web:99f835acd19d3199f665e3",
-});
+// Parse config from registration query parameters
+const params = new URLSearchParams(location.search);
+const apiKey = params.get('apiKey');
+const authDomain = params.get('authDomain');
+const projectId = params.get('projectId');
+const storageBucket = params.get('storageBucket');
+const messagingSenderId = params.get('messagingSenderId');
+const appId = params.get('appId');
 
-// Retrieve an instance of Firebase Messaging so that it can handle background
-// messages.
-const messaging = firebase.messaging();
+if (apiKey && projectId && messagingSenderId && appId) {
+    firebase.initializeApp({
+        apiKey,
+        authDomain: authDomain || undefined,
+        projectId,
+        storageBucket: storageBucket || undefined,
+        messagingSenderId,
+        appId,
+    });
 
-messaging.onBackgroundMessage((payload) => {
-    console.log(
-        '[firebase-messaging-sw.js] Received background message ',
-        payload
-    );
-    // Customize notification here
-    const notificationTitle = payload.notification.title;
-    const notificationOptions = {
-        body: payload.notification.body,
-        icon: '/logo.png', // TrustFirst logo
-    };
+    // Retrieve an instance of Firebase Messaging for background messages
+    const messaging = firebase.messaging();
 
-    self.registration.showNotification(notificationTitle, notificationOptions);
-});
+    messaging.onBackgroundMessage((payload) => {
+        console.log(
+            '[firebase-messaging-sw.js] Received background message ',
+            payload
+        );
+        const notificationTitle = payload.notification?.title || 'Notification';
+        const notificationOptions = {
+            body: payload.notification?.body || '',
+            icon: '/logo.png', // TrustFirst logo
+        };
+
+        self.registration.showNotification(notificationTitle, notificationOptions);
+    });
+}

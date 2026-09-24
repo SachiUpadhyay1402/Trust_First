@@ -13,7 +13,7 @@ export async function GET() {
     );
 
     const result = await sendEmail({
-      to: process.env.EMAIL_USER || "jeelnandha52@gmail.com",
+      to: process.env.EMAIL_USER || "test@example.com",
       subject: testTemplate.subject,
       html: testTemplate.html,
     });
